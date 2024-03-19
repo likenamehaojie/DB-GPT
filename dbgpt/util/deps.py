@@ -1,6 +1,6 @@
 from typing import Union, Any, Optional
 from datetime import datetime
-from fastapi import Depends, HTTPException, status
+from fastapi import Depends, HTTPException, status, Header
 from fastapi.security import OAuth2PasswordBearer
 from jose import jwt
 
@@ -17,7 +17,7 @@ reuseable_oauth = OAuth2PasswordBearer(
 )
 
 
-async def get_current_user(token: Optional[str] = None) -> UserOut:
+async def get_current_user(token: str = Header(...)) -> UserOut:
     try:
         if token is None:
             Result.failed(code="E000X", msg=f"Token expired")
