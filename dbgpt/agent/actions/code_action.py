@@ -113,7 +113,8 @@ class CodeAction(Action[None]):
                 # raise NotImplementedError
             if image is not None:
                 self._code_execution_config["use_docker"] = image
-            logs_all += "\n" + logs
+            if logs is not None:
+                logs_all += "\n" + logs
             if exitcode != 0:
                 return exitcode, logs_all
         return exitcode, logs_all

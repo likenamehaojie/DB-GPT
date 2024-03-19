@@ -3,9 +3,9 @@ import os
 import sys
 from typing import List
 
-from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.openapi.docs import get_swagger_ui_html
+from fastapi.params import Depends
 
 # fastapi import time cost about 0.05s
 from fastapi.staticfiles import StaticFiles
@@ -26,9 +26,9 @@ from dbgpt.configs.model_config import (
     EMBEDDING_MODEL_CONFIG,
     LLM_MODEL_CONFIG,
     LOGDIR,
-    ROOT_PATH,
 )
 from dbgpt.serve.core import add_exception_handler
+from dbgpt.util.deps import get_current_user
 from dbgpt.util.fastapi import PriorityAPIRouter
 from dbgpt.util.parameter_utils import _get_dict_from_obj
 from dbgpt.util.system_utils import get_system_info
@@ -39,6 +39,7 @@ from dbgpt.util.utils import (
     setup_http_service_logging,
     setup_logging,
 )
+from fastapi import FastAPI
 
 ROOT_PATH = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 sys.path.append(ROOT_PATH)
@@ -83,6 +84,7 @@ system_app = SystemApp(app)
 def mount_routers(app: FastAPI):
     """Lazy import to avoid high time cost"""
     from dbgpt.app.knowledge.api import router as knowledge_router
+    from dbgpt.app.user.api import router as user_router
     from dbgpt.app.llm_manage.api import router as llm_manage_api
     from dbgpt.app.openapi.api_v1.api_v1 import router as api_v1
     from dbgpt.app.openapi.api_v1.editor.api_editor_v1 import (
@@ -98,6 +100,8 @@ def mount_routers(app: FastAPI):
     app.include_router(gpts_v1, prefix="/api", tags=["GptsApp"])
 
     app.include_router(knowledge_router, tags=["Knowledge"])
+
+    app.include_router(user_router,tags=["User"])
 
 
 def mount_static_files(app: FastAPI):
@@ -245,6 +249,7 @@ def run_webserver(param: WebServerParameters = None):
     ):
         param = initialize_app(param)
         run_uvicorn(param)
+
 
 
 if __name__ == "__main__":

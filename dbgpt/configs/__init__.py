@@ -14,5 +14,4 @@ if "pytest" in sys.argv or "pytest" in sys.modules or os.getenv("CI"):
 load_dotenv(verbose=True, override=True)
 ROOT_PATH = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 load_dotenv(os.path.join(ROOT_PATH, ".plugin_env"))
-
 del load_dotenv
