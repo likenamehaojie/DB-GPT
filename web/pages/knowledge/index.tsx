@@ -5,6 +5,7 @@ import SpaceCard from '@/components/knowledge/space-card';
 import { File, ISpace, StepChangeParams } from '@/types/knowledge';
 import { apiInterceptors, getSpaceList } from '@/client/api';
 import { useTranslation } from 'react-i18next';
+
 import DocUploadForm from '@/components/knowledge/doc-upload-form';
 import SpaceForm from '@/components/knowledge/space-form';
 import DocTypeForm from '@/components/knowledge/doc-type-form';

@@ -4,8 +4,8 @@ from pydantic import BaseModel, Field
 
 
 class TokenSchema(BaseModel):
-    access_token: str
-    refresh_token: str
+    access_token: str = Field(..., description="", type="string")
+    refresh_token: str = Field(..., description="", type="string")
 
 
 class TokenPayload(BaseModel):
@@ -26,6 +26,7 @@ class UserAuth(BaseModel):
 class UserOut(BaseModel):
     id: int
     email: str
+    code: str = 200
 
 
 class SystemUser(UserOut):

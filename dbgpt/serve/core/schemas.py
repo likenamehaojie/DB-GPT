@@ -1,10 +1,11 @@
 import logging
 import sys
-from typing import TYPE_CHECKING, Any, Generic, Optional, TypeVar
+from typing import TYPE_CHECKING, Any, Generic, Optional, TypeVar, Sequence
 
 from fastapi import HTTPException, Request
-from fastapi.exceptions import RequestValidationError
+from fastapi.exceptions import RequestValidationError, RequestErrorModel
 from fastapi.responses import JSONResponse
+from pydantic.error_wrappers import ErrorList
 
 from dbgpt._private.pydantic import BaseModel, Field
 
@@ -19,6 +20,12 @@ if TYPE_CHECKING:
 
 logger = logging.getLogger(__name__)
 T = TypeVar("T")
+
+
+class AuthException(HTTPException):
+    status_code = 401,
+    detail = "Token expired",
+
 
 
 class Result(BaseModel, Generic[T]):
@@ -55,7 +62,7 @@ class Result(BaseModel, Generic[T]):
 
 
 async def validation_exception_handler(
-    request: Request, exc: RequestValidationError
+        request: Request, exc: RequestValidationError
 ) -> JSONResponse:
     """Validation exception handler"""
     message = ""
@@ -94,8 +101,18 @@ async def common_exception_handler(request: Request, exc: Exception) -> JSONResp
     return JSONResponse(status_code=400, content=res.dict())
 
 
+async def auth_exception_handler(request: Request, exc: HTTPException):
+    res = Result.failed(
+        msg=exc.detail,
+        err_code="E0005",
+    )
+    logger.error(f"auth exception: {res}")
+    return JSONResponse(status_code=400, content=res.dict())
+
+
 def add_exception_handler(app: "FastAPI"):
     """Add exception handler"""
     app.add_exception_handler(RequestValidationError, validation_exception_handler)
     app.add_exception_handler(HTTPException, http_exception_handler)
     app.add_exception_handler(Exception, common_exception_handler)
+    app.add_exception_handler(AuthException, auth_exception_handler)

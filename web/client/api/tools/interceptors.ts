@@ -1,7 +1,7 @@
 import { AxiosError } from 'axios';
 import { ApiResponse, FailedTuple, SuccessTuple, ResponseType } from '../';
 import { notification } from 'antd';
-
+import { HistoryRouterProps, unstable_HistoryRouter } from 'react-router-dom';
 /**
  * Response processing
  *
@@ -30,6 +30,13 @@ export const apiInterceptors = <T = any, D = any>(promise: Promise<ApiResponse<T
     })
     .catch<FailedTuple<T, D>>((err: Error | AxiosError<T, D>) => {
       let errMessage = err.message;
+      // @ts-ignore
+      let {response:{data:{err_code}}}  = err
+       // @ts-ignore
+      if( "E0005" == err_code) {
+        // @ts-ignore
+        window.location="/login"
+      }
       if (err instanceof AxiosError) {
         try {
           const { err_msg } = JSON.parse(err.request.response) as ResponseType<null>;

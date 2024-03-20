@@ -1,4 +1,5 @@
 import axios, { AxiosRequestConfig, AxiosError, AxiosResponse } from 'axios';
+import { TOOKEN_KEY } from '@/utils';
 
 export type ResponseType<T = any> = {
   data: T;
@@ -41,6 +42,7 @@ ins.interceptors.request.use((request) => {
   if (!request.timeout) {
     request.timeout = isLongTimeApi ? 60000 : 10000;
   }
+  request.headers["token"] = localStorage.getItem(TOOKEN_KEY)
   return request;
 });
 
@@ -64,5 +66,13 @@ export const DELETE = <Params = any, Response = any, D = any>(url: string, param
   return ins.delete<Params, ApiResponse<Response>>(url, { params, ...config });
 };
 
+export const POST_USER_BODY = <Data = any, Response = any, D = any>(url: string, data?: Data, config?: AxiosRequestConfig<D>) => {
+  config = {
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    }
+  }
+  return ins.post<Data, ApiResponse<Response>>(url, data, config);
+};
 export * from './tools';
 export * from './request';

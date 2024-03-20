@@ -1,5 +1,5 @@
 import { AxiosRequestConfig } from 'axios';
-import { DELETE, GET, POST, PUT } from '.';
+import { DELETE, GET, POST, POST_USER_BODY, PUT } from '.';
 import { DbListResponse, DbSupportTypeResponse, PostDbParams, ChatFeedBackSchema } from '@/types/db';
 import { DialogueListResponse, IChatDialogueSchema, NewDialogueParam, SceneResponse, ChatHistoryResponse, FeedBack, IDB } from '@/types/chat';
 import { IModelData, StartModelParams, BaseModelParams, SupportModel } from '@/types/model';
@@ -325,3 +325,8 @@ export const getAppStrategy = () => {
 export const getAppStrategyValues = (type: string) => {
   return GET<string, []>(`/api/v1/llm-strategy/value/list?type=${type}`);
 };
+
+export const login = (data: Record<string, string>) => {
+  console.log(data)
+  return POST_USER_BODY<Record<string, string>, []>('/api/login', data);
+}

@@ -44,7 +44,6 @@ from fastapi import FastAPI
 ROOT_PATH = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 sys.path.append(ROOT_PATH)
 
-
 static_file_path = os.path.join(ROOT_PATH, "dbgpt", "app/static")
 
 CFG = Config()
@@ -93,15 +92,15 @@ def mount_routers(app: FastAPI):
     from dbgpt.app.openapi.api_v1.feedback.api_fb_v1 import router as api_fb_v1
     from dbgpt.serve.agent.app.controller import router as gpts_v1
 
-    app.include_router(api_v1, prefix="/api", tags=["Chat"])
-    app.include_router(api_editor_route_v1, prefix="/api", tags=["Editor"])
-    app.include_router(llm_manage_api, prefix="/api", tags=["LLM Manage"])
-    app.include_router(api_fb_v1, prefix="/api", tags=["FeedBack"])
-    app.include_router(gpts_v1, prefix="/api", tags=["GptsApp"])
+    app.include_router(api_v1, prefix="/api", tags=["Chat"], dependencies=[Depends(get_current_user)])
+    app.include_router(api_editor_route_v1, prefix="/api", tags=["Editor"], dependencies=[Depends(get_current_user)])
+    app.include_router(llm_manage_api, prefix="/api", tags=["LLM Manage"], dependencies=[Depends(get_current_user)])
+    app.include_router(api_fb_v1, prefix="/api", tags=["FeedBack"], dependencies=[Depends(get_current_user)])
+    app.include_router(gpts_v1, prefix="/api", tags=["GptsApp"], dependencies=[Depends(get_current_user)])
 
-    app.include_router(knowledge_router, tags=["Knowledge"])
+    app.include_router(knowledge_router, tags=["Knowledge"], dependencies=[Depends(get_current_user)])
 
-    app.include_router(user_router,tags=["User"])
+    app.include_router(user_router, prefix="/api", tags=["User"])
 
 
 def mount_static_files(app: FastAPI):
@@ -239,17 +238,16 @@ def run_webserver(param: WebServerParameters = None):
     )
 
     with root_tracer.start_span(
-        "run_webserver",
-        span_type=SpanType.RUN,
-        metadata={
-            "run_service": SpanTypeRunName.WEBSERVER,
-            "params": _get_dict_from_obj(param),
-            "sys_infos": _get_dict_from_obj(get_system_info()),
-        },
+            "run_webserver",
+            span_type=SpanType.RUN,
+            metadata={
+                "run_service": SpanTypeRunName.WEBSERVER,
+                "params": _get_dict_from_obj(param),
+                "sys_infos": _get_dict_from_obj(get_system_info()),
+            },
     ):
         param = initialize_app(param)
         run_uvicorn(param)
-
 
 
 if __name__ == "__main__":

@@ -82,6 +82,11 @@ function LayoutWrapper({ children }: { children: React.ReactNode }) {
 }
 
 function MyApp({ Component, pageProps }: AppProps) {
+  let {name} = Component;
+  if('Login' === name) {
+       return  <div>  <Component {...pageProps} /></div>
+
+  }
   return (
     <ChatContextProvider>
       <ThemeProvider theme={joyTheme}>

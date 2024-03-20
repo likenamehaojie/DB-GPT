@@ -2,6 +2,7 @@ import { EventStreamContentType, fetchEventSource } from '@microsoft/fetch-event
 import { message } from 'antd';
 import { useCallback, useEffect, useMemo } from 'react';
 import i18n from '@/app/i18n';
+import { TOOKEN_KEY } from '@/utils';
 
 type Props = {
   queryAgentURL?: string;
@@ -38,10 +39,13 @@ const useChat = ({ queryAgentURL = '/api/v1/chat/completions' }: Props) => {
       }
 
       try {
+
         await fetchEventSource(`${process.env.API_BASE_URL ?? ''}${queryAgentURL}`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
+             // @ts-ignore
+            'Token': localStorage.getItem(TOOKEN_KEY)
           },
           body: JSON.stringify(parmas),
           signal: ctrl.signal,
