@@ -6,7 +6,7 @@ from abc import ABC
 from collections import defaultdict
 from typing import Any, Dict, List, Optional, Type
 
-from fastapi import APIRouter, Body
+from fastapi import APIRouter, Body, Depends
 from fastapi.responses import StreamingResponse
 
 from dbgpt._private.config import Config
@@ -20,6 +20,7 @@ from dbgpt.agent.memory.gpts_memory import GptsMemory
 from dbgpt.agent.resource.resource_loader import ResourceLoader
 from dbgpt.app.openapi.api_view_model import Result
 from dbgpt.app.scene.base import ChatScene
+from dbgpt.app.user.schemas import UserOut
 from dbgpt.component import BaseComponent, ComponentType, SystemApp
 from dbgpt.core.interface.message import StorageConversation
 from dbgpt.model.cluster import WorkerManagerFactory
@@ -27,6 +28,7 @@ from dbgpt.model.cluster.client import DefaultLLMClient
 from dbgpt.serve.agent.model import PagenationFilter, PluginHubFilter
 from dbgpt.serve.agent.team.plan.team_auto_plan import AutoPlanChatManager
 from dbgpt.serve.conversation.serve import Serve as ConversationServe
+from dbgpt.util.deps import get_current_user
 from dbgpt.util.json_utils import serialize
 
 from ..db.gpts_app import GptsApp, GptsAppDao, GptsAppQuery
@@ -363,7 +365,7 @@ async def dgpts_completions(
     user_query: str,
     conv_id: str = None,
     user_code: str = None,
-    sys_code: str = None,
+    sys_code: str = None
 ):
     logger.info(f"dgpts_completions:{gpts_name},{user_query},{conv_id}")
     if conv_id is None:

@@ -22,6 +22,7 @@ from dbgpt.app.openapi.api_view_model import (
     Result,
 )
 from dbgpt.app.scene import BaseChat, ChatFactory, ChatScene
+from dbgpt.app.user.schemas import UserOut
 from dbgpt.component import ComponentType
 from dbgpt.configs.model_config import KNOWLEDGE_UPLOAD_ROOT_PATH
 from dbgpt.core.awel import CommonLLMHttpRequestBody, CommonLLMHTTPRequestContext
@@ -31,6 +32,7 @@ from dbgpt.model.cluster import BaseModelController, WorkerManager, WorkerManage
 from dbgpt.rag.summary.db_summary_client import DBSummaryClient
 from dbgpt.serve.agent.agents.controller import multi_agents
 from dbgpt.serve.flow.service.service import Service as FlowService
+from dbgpt.util.deps import get_current_user
 from dbgpt.util.executor_utils import (
     DefaultExecutorFactory,
     ExecutorFactory,
@@ -330,6 +332,8 @@ async def chat_prepare(dialogue: ConversationVo = Body()):
 async def chat_completions(
     dialogue: ConversationVo = Body(),
     flow_service: FlowService = Depends(get_chat_flow),
+    user: UserOut = Depends(get_current_user)
+
 ):
     print(
         f"chat_completions:{dialogue.chat_mode},{dialogue.select_param},{dialogue.model_name}"
@@ -340,6 +344,7 @@ async def chat_completions(
         "Connection": "keep-alive",
         "Transfer-Encoding": "chunked",
     }
+    dialogue.user_name = user.email
     if dialogue.chat_mode == ChatScene.ChatAgent.value():
         return StreamingResponse(
             multi_agents.app_agent_chat(
