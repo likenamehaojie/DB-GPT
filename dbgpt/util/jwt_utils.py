@@ -4,11 +4,17 @@ from datetime import datetime, timedelta
 from typing import Union, Any
 from jose import jwt
 
-ACCESS_TOKEN_EXPIRE_MINUTES = 30  # 30 minutes
-REFRESH_TOKEN_EXPIRE_MINUTES = 60 * 24 * 7  # 7 days
-ALGORITHM = "HS256"
-JWT_SECRET_KEY = "asdfsfadfasdf"  # should be kept secret
-JWT_REFRESH_SECRET_KEY = "asdfasdf222222222 "  # should be kept secret
+from dbgpt._private.config import Config
+
+CFG = Config()
+ACCESS_TOKEN_EXPIRE_MINUTES = CFG.ACCESS_TOKEN_EXPIRE_MINUTES  # 30 minutes
+REFRESH_TOKEN_EXPIRE_MINUTES = CFG.REFRESH_TOKEN_EXPIRE_MINUTES  # 7 days
+ALGORITHM = CFG.ALGORITHM
+JWT_SECRET_KEY = CFG.JWT_SECRET_KEY
+JWT_REFRESH_SECRET_KEY = CFG.JWT_REFRESH_SECRET_KEY
+# ALGORITHM = "HS256"
+# JWT_SECRET_KEY = "asdfsfadfasdf"  # should be kept secret
+# JWT_REFRESH_SECRET_KEY = "asdfasdf222222222 "  # should be kept secret
 
 password_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 

@@ -19,6 +19,11 @@ class Config(metaclass=Singleton):
     def __init__(self) -> None:
         """Initialize the Config class"""
 
+        self.JWT_REFRESH_SECRET_KEY = os.getenv("JWT_REFRESH_SECRET_KEY")
+        self.JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY")
+        self.ALGORITHM = os.getenv("ALGORITHM")
+        self.REFRESH_TOKEN_EXPIRE_MINUTES = int(os.getenv("REFRESH_TOKEN_EXPIRE_MINUTES"))
+        self.ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES"))
         self.NEW_SERVER_MODE = False
         self.SERVER_LIGHT_MODE = False
 

@@ -1,21 +1,15 @@
 from typing import Union, Any, Optional
 from datetime import datetime
-from fastapi import Depends, HTTPException, status, Header
-from fastapi.security import OAuth2PasswordBearer
+
+from fastapi import   status, Header
 from jose import jwt
 
-from dbgpt.app.openapi.api_view_model import Result
 from pydantic import ValidationError
 
-from dbgpt.app.user.schemas import SystemUser, TokenPayload, UserAuth, UserOut
+from dbgpt.app.user.schemas import  TokenPayload, UserAuth, UserOut
 from dbgpt.app.user.service import UserService
-from dbgpt.serve.core import Result
 from dbgpt.serve.core.schemas import AuthException
 from dbgpt.util.jwt_utils import JWT_SECRET_KEY, ALGORITHM
-reuseable_oauth = OAuth2PasswordBearer(
-    tokenUrl="/login",
-    scheme_name="JWT"
-)
 
 
 async def get_current_user(token: str = Header(default="1")) -> UserOut:

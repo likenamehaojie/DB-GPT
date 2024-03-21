@@ -5,6 +5,7 @@ import styles from '../../styles/login.module.css'
 import { apiInterceptors, login } from '@/client/api';
 import { TOOKEN_KEY } from '@/utils';
 import { useRouter } from 'next/router';
+import { notification } from 'antd';
 
 function Login() {
   const [username,setUserName] = useState<string>('');
@@ -16,6 +17,8 @@ function Login() {
   async function loginApp(){
     console.log(username,password)
     let [a,b,c,d] =  await  apiInterceptors(login({username:username,password:password,grant_type:""}))
+    if(b==null)return
+    debugger
     // @ts-ignore
     let {access_token}  = b
     // @ts-ignore
@@ -30,15 +33,15 @@ function Login() {
   return (
       <div className={styles.container}>
         <div className={styles.login_wrapper}>
-          <div className={styles.header}>Login</div>
+          <div className={styles.header}>智能问答平台</div>
           <div className="form-wrapper">
             <input type="text" name="username" placeholder="username" className={styles.input_item} value={username} onChange={e =>{setUserName(e.target.value)}}/>
             <input type="password" name="password" placeholder="password" className={styles.input_item} value={password} onChange={event => {setPassWord(event.target.value)}} />
-            <div className={styles.btn} onClick={loginApp} >Login</div>
+            <div className={styles.btn} onClick={loginApp} >登陆</div>
           </div>
           <div className={styles.msg}>
-            Don't have account?
-            <a className = {styles.a} href="#">Sign up</a>
+            还没有账号?
+            <a className = {styles.a} href="#">注册</a>
           </div>
         </div>
       </div>
