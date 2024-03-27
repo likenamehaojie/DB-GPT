@@ -183,3 +183,6 @@ thirdparty
 # Ignore awel DAG visualization files
 /examples/**/*.gv
 /examples/**/*.gv.pdf
+/logs
+/dbgpt.egg-info
+/models
