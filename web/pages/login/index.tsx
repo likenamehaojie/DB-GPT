@@ -30,21 +30,32 @@ function Login() {
   }
 
 
+
   return (
-      <div className={styles.container}>
-        <div className={styles.login_wrapper}>
-          <div className={styles.header}>智能问答平台</div>
-          <div className="form-wrapper">
-            <input type="text" name="username" placeholder="username" className={styles.input_item} value={username} onChange={e =>{setUserName(e.target.value)}}/>
-            <input type="password" name="password" placeholder="password" className={styles.input_item} value={password} onChange={event => {setPassWord(event.target.value)}} />
-            <div className={styles.btn} onClick={loginApp} >登陆</div>
-          </div>
-          <div className={styles.msg}>
-            还没有账号?
-            <a className = {styles.a} href="#">注册</a>
-          </div>
+    <div className={styles.container}>
+
+      <video muted  className={styles.video} src='/2.mp4' autoplay="autoPlay" loop = "loop" ></video>
+
+      <div className={styles.login_wrapper}>
+
+        <div className={styles.header}>智能问答平台</div>
+        <div className="form-wrapper">
+          <input type="text" name="username" placeholder="username" className={styles.input_item} value={username}
+                 onChange={e => {
+                   setUserName(e.target.value)
+                 }} />
+          <input type="password" name="password" placeholder="password" className={styles.input_item} value={password}
+                 onChange={event => {
+                   setPassWord(event.target.value)
+                 }} />
+          <div className={styles.btn} onClick={loginApp}>登陆</div>
+        </div>
+        <div className={styles.msg}>
+          还没有账号?
+          <a className={styles.a} href="#">注册</a>
         </div>
       </div>
+    </div>
   );
 }
 

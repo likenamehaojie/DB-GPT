@@ -140,7 +140,7 @@ function ChatContent({ children, content, isChartChat, onLinkClick }: PropsWithC
         'bg-white dark:bg-[#232734]': isRobot,
         'lg:w-full xl:w-full pl-0': ['chat_with_db_execute', 'chat_dashboard'].includes(scene),
       })}
-    >
+    >1111111
       <div className="mr-2 flex flex-shrink-0 items-center justify-center h-7 w-7 rounded-full text-lg sm:mr-4">
         {isRobot ? renderModelIcon(model_name) || <RobotOutlined /> : <UserOutlined />}
       </div>

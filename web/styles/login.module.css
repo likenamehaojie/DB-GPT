@@ -4,17 +4,17 @@
             padding: unset;
             height: 100vh;
             width: 100%;
-            background-image: linear-gradient(to right, #999999, #330867);
+            background-image: linear-gradient(to bottom, #181717, #080724);
         }
         .login_wrapper {
-            background-color: bisque;
+         background-image: linear-gradient(to bottom, #857a7a, #29267d);
             width: 358px;
             height: 588px;
             border-radius: 15px;
             padding: 0 50px;
             position: relative;
-            left: 50%;
-            top: 50%;
+            left: 75%;
+            top: 12%;
             transform: translate(-50%,-50%);
         }
         .header {
@@ -22,6 +22,7 @@
             font-weight: bold;
             text-align: center;
             line-height: 200px;
+            color: white;
         }
         .input_item {
             display: block;
@@ -41,14 +42,23 @@
             padding: 10px;
             width: 100%;
             margin-top: 40px;
-            background-image: linear-gradient(to right,#a6c1ee, #fbc2eb);
+            background-image: linear-gradient(to right, #323336, #2f4f64);
             color: #fff;
         }
         .msg {
             text-align: center;
             line-height: 88px;
+            color: white;
         }
         .a {
             text-decoration-line: none;
             color: #abc1ee;
+        }
+        .video{
+            width: 30%;
+            border-radius: 50px;
+            position: relative;
+            left: 30%;
+            top:46%;
+            transform: translate(-50%,-50%);
         }
